@@ -1,0 +1,66 @@
+﻿<!-- extend from base layout -->
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <style type="text/css">
+      body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+      }
+
+      .form-signin {
+        
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+      .form-signin .form-signin-heading,
+      .form-signin .checkbox {
+        margin-bottom: 10px;
+      }
+      .form-signin input[type="text"],
+      .form-signin input[type="password"] {
+        font-size: 16px;
+        height: auto;
+        margin-bottom: 15px;
+        padding: 7px 9px;
+      }
+
+    </style>
+
+
+    <div class="container" style="width:980px">
+        <div style="float:left;width:460px">
+            <form class="form-signin" action="" method="post" name="login">
+          
+            <h2 class="form-signin-heading">Prijava z Google računom</h2>
+
+            <button class="btn btn-large btn-primary" type="button" onclick="location.href='/login_oid'" style="text-align:center">Prijava</button>
+          </form>
+        </div>
+        <div style="float:right;width:460px">
+
+      <form class="form-signin" action="" method="post" name="login">
+          
+        <h2 class="form-signin-heading">Prijava preko foruma</h2>
+         ( http://rit2011vs.mojforum.si/ )<br /><br />
+        <input name="username" type="text" class="input-block-level" placeholder="Uporabniško ime">
+        <input name="password" type="password" class="input-block-level" placeholder="Geslo">
+        <label class="checkbox">
+          <input type="checkbox" value="remember-me" value="yes">zapomni si me
+        </label>
+        <button class="btn btn-large btn-primary" type="submit">Prijava</button>
+      </form>
+        </div>
+        <div style="clear:both;display:block"></div>
+    </div> <!-- /container -->
+{% endblock %}
