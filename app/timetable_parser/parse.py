@@ -57,7 +57,7 @@ def parseHtml(data):
             lectureData['location'] = data.group(3)
             lectureData['start'] = hours[start - 1]
             lectureData['end'] = hours[start+length - 1]
-                
+            lectureData['project'] = data.group(5)
                 
         #[lecture, professor, location, start, end, type]
         result.append(lectureData)

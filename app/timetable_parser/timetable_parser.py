@@ -150,6 +150,10 @@ def getTimetable(date, programId, year, branchId):
         
         response = response.getvalue()
         
+        decoded_str = response.decode("windows-1250")
+        response = decoded_str.encode("utf8")
+
+        print response
         if response != '':
             return response
         else:

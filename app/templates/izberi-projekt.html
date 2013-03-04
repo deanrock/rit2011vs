@@ -40,11 +40,15 @@
 
     <div class="container">
 
-      <div class="form-signin" action="" method="post" name="login">
-           <h2 class="form-signin-heading">Moj profil</h2>
-            Vzdevek: {{g.user.nickname}}<br />
-            Email: {{g.user.email}}<br /><br />
-            Projekt: {{g.user.projekt}} <a href="{{url_for('izberi_projekt')}}">spremeni</a>
+      <div class="form-signin" action="" method="post">
+           <h2 class="form-signin-heading">Izberi projekt</h2>
+            <form method="post">
+                <select name="projekt">
+                    <option value="pametni-telefon">Pametni telefon</option>
+                    <option value="feri-navigator">Feri navigator</option>
+                </select><br />
+                <button class="btn btn-medium btn-primary" type="submit">Shrani</button>
+            </form>
       </div>
     </div> <!-- /container -->
 {% endblock %}

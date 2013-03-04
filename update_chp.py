@@ -64,11 +64,41 @@ def update(predmet, url):
                     db.session.add(record)
                     db.session.commit()
 
+def insert_or_edit(naziv, prostor, predmet, termin, dan, asistent):
+    record = models.Vaje.query.filter_by(naziv=naziv,predmet=predmet).first()
+
+    if record:
+        record.prostor = prostor
+        record.predmet = predmet
+        record.termin = termin
+        record.dan=dan
+        record.asistent=unicode(asistent, 'utf-8')
+        db.session.commit()
+    else:
+        record = models.Vaje()
+        record.naziv = naziv
+        record.prostor = prostor
+        record.predmet = predmet
+        record.termin = termin
+        record.dan=dan
+        record.asistent=unicode(asistent, 'utf-8')
+                    
+        db.session.add(record)
+        db.session.commit()
 
 #update RAIN
 update(u'Razvoj aplikacij za internet', 'http://chp.uni-mb.si/rezervacije/rain/')
 
 #update RO
 update(u'Računalniška omrežja', 'http://chp.uni-mb.si/rezervacije/ro/')
+
+#update SA
+insert_or_edit('Skupina 1', 'E-110', 'Sistemska administracija', '10:00-11:30', 2, '')
+insert_or_edit('Skupina 2', 'E-110', 'Sistemska administracija', '11:30-13:00', 2, '')
+insert_or_edit('Skupina 3', 'E-110', 'Sistemska administracija', '8:05-9:15', 1, '')
+
+#update ORV
+insert_or_edit('Skupina FERI Navigator', 'F-103/F-104', 'Osnove računalniškega vida', '12:15-13:45', 5, '')
+insert_or_edit('Skupina Pametni Telefon', 'F-103/F-104', 'Osnove računalniškega vida', '13:45-15:15', 5, '')
 
 print models.Vaje.query.all()
