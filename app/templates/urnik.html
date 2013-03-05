@@ -1,82 +1,99 @@
 ﻿{% extends "layout.html" %}
 
 {% block content %}
-{#
-<a href="/urnik/{{prev_week}}">&lt;&lt;</a> [ {{monday|date}} - {{saturday|date}} ] <a href="/urnik/{{next_week}}">&gt;&gt;</a>
-  <div id="calendar">
-      <table>
-          <tr>
-              <th style="width:3%"></th>
-              {% for name, date in days %}
-                <th>{{name}}, {{date|date}}</th>
-              {% endfor %}
-          </tr>
 
-          {% for h in hours %}
-          <tr>
-              <td>{{h.hour}}</td>
-              {% for c in h.cells %}
-                {% if c.empty %}
-                    
-                {% else %}
-                    {% if c %}
-                        <td rowspan="{{c.spacing}}">{{c.lecture}} - {{c.type}}, {{c.location}}, {{c.professor}}<br />{{c.project}}</td>
-                    {% else %}
-                        <td></td>
-                    {% endif %}
-                {% endif%}
-              {%endfor %}
-          </tr>
-          {% endfor %}
-      </table>
-  </div>
+
+
+<style type='text/css'>
+		
+	#external-events {
+		width: 150px;
+		padding: 0 10px;
+		border: 1px solid #ccc;
+		background: #eee;
+		text-align: left;
+		}
+		
+	#external-events h4 {
+		font-size: 16px;
+		margin-top: 0;
+		padding-top: 1em;
+		}
+		
+	.external-event { /* try to mimick the look of a real event */
+		margin: 10px 0;
+		padding: 2px 4px;
+		background: #3366CC;
+		color: #fff;
+		font-size: .85em;
+		cursor: pointer;
+		}
+		
+	#external-events p {
+		margin: 1.5em 0;
+		font-size: 11px;
+		color: #666;
+		}
+		
+	#external-events p input {
+		margin: 0;
+		vertical-align: middle;
+		}
+
+	#calendar {
+		
+		}
+
+</style>
+<div style="text-align: center;">
+<span class="fc-button fc-button-prev fc-state-default fc-corner-left"><span class="fc-button-inner">
+    <a href="/urnik/{{prev_week}}"><span class="fc-button-content">&nbsp;◄&nbsp;</span><span class="fc-button-effect"><span></span></span></span></span></a>
+    <span style="font-size:26px;margin-bottom:5px;">{{monday|date}} - {{saturday|date}}</span>
+    <a href="/urnik/{{next_week}}"><span class="fc-button fc-button-next fc-state-default fc-corner-right"><span class="fc-button-inner">
+        <span class="fc-button-content">&nbsp;►&nbsp;</span><span class="fc-button-effect"><span></span></span></span></span></a>
+    <span class="fc-header-space"></span>
+</div>
+<br />
+<div id='calendar'></div>
 
 <div class="container">
 <div class="row">
-        <div class="span4">
-          <h4>Računalniška omrežja <span style="font-size:12px;font-weight:normal;font-style:italic">( <a href="http://chp.uni-mb.si/rezervacije/ro/" target="_blank">obišči</a> )</span></h4>
+        {% for v in izbirne_vaje %}
+    
+        <div class="span4" style="min-height:200px">
+          <h4>{{izbirne_vaje[v].predmet}} <span style="font-size:12px;font-weight:normal;font-style:italic">
+            {#  ( <a href="http://chp.uni-mb.si/rezervacije/ro/" target="_blank">obišči</a> )</span>#}</h4>
             <form method="post">
+                <input type="hidden" name="predmet" value="{{v}}" />
           <ul style="list-style:none">
-              {% for termin in ro %}
-                <li><input {% if termin == ro_selected %}checked="checked" {%endif%} type="radio" name="ro_termin" value="{{termin.id}}" /> {{termin.dan|day}}, {{termin.termin}}</li>
+              {% for termin in izbirne_vaje[v].termini %}
+                <li><input {% if termin.selected %}checked="checked" {%endif%} type="radio" name="vaje_termin" value="{{termin.id}}" /> 
+                    {{termin.dan|day}}, {{termin.termin}}</li>
               {% endfor %}
               <br />
               <button class="btn btn-medium btn-primary" type="submit">Shrani</button>
-              <button class="btn btn-medium btn-secondary" name="ro_clear" value="yes" type="submit">Zbriši</button>
+              <button class="btn btn-medium btn-secondary" name="vaje_clear" value="yes" type="submit">Zbriši</button>
           </ul>
                 </form>
         </div>
-        <div class="span4">
-          <h4>Razvoj aplikacij za internet <span style="font-size:12px;font-weight:normal;font-style:italic">( <a href="http://chp.uni-mb.si/rezervacije/rain/" target="_blank">obišči</a> )</span></h4>
-          <form method="post">
-          <ul style="list-style:none">
-              {% for termin in rain %}
-                <li><input {% if termin == rain_selected %}checked="checked" {%endif%} type="radio" name="rain_termin" value="{{termin.id}}" /> {{termin.dan|day}}, {{termin.termin}}</li>
-              {% endfor %}
-              <br />
-              <button class="btn btn-medium btn-primary" type="submit">Shrani</button>
-              <button class="btn btn-medium btn-secondary" name="rain_clear" value="yes" type="submit">Zbriši</button>
-          </ul>
-                </form>
-       </div>
-        <div class="span4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
-        </div>
+        {% endfor %}
       </div>
     </div>
 
-<style>
-    #calendar td {
-        border:1px solid #eee;
-        text-align:center;
-        font-size:12px;
-    }
-    #calendar th {
-        width: 8%;
-    }
-</style>#}
+
+
+
+<div id='external-events'>
+<h4>Draggable Events</h4>
+<div class='external-event'>My Event 1</div>
+<div class='external-event'>My Event 2</div>
+<div class='external-event'>My Event 3</div>
+<div class='external-event'>My Event 4</div>
+<div class='external-event'>My Event 5</div>
+<p>
+<input type='checkbox' id='drop-remove' /> <label for='drop-remove'>remove after drop</label>
+</p>
+</div>
 
 <script type='text/javascript'>
 
@@ -112,13 +129,27 @@
 
         $('#calendar').fullCalendar({
             header: {
-                
+
                 left: '',
                 center: '',
                 right: ''
             },
             defaultView: 'agendaWeek',
             editable: true,
+            firstDay: 1,
+            dayNames: ['Nedelja','Ponedeljek','Torek','Sreda','Četrtek','Petek','Sobota'],
+            dayNamesShort: ['Ned', 'Pon', 'Tor', 'Sre', 'Čet', 'Pet', 'Sob'],
+            columnFormat: {
+                month: 'ddd',
+                week: 'ddd d.M.yyyy',
+                day: 'dddd d M'
+            },
+            minTime: 7,
+            maxTime: 21,
+            axisFormat: 'H:mm', //,'h(:mm)tt',
+            timeFormat: {
+                agenda: 'H:mm' //h:mm{ - h:mm}'
+            },
             droppable: true, // this allows things to be dropped onto the calendar !!!
             drop: function (date, allDay) { // this function is called when something is dropped
 
@@ -145,111 +176,36 @@
             }
         });
 
+        $('#calendar').fullCalendar('gotoDate', new Date(Date.parse('{{date}}')));
+        day = '{{date|date}}'.replace('.', '-').replace('.', '-');
+        $.get('/json/urnik?date=' + day, function (data) {
+            
 
+            function calendar_time(t,day) {
+                var s = t.split(":");
+                var date = new Date(Date.parse('{{monday}}'));
+                
+                var x = date;
+                x.setHours(s[0]);
+                x.setMinutes(s[1]);
+                
+                x.setDate(x.getDate()+day-1);
+                return x;
+            }
+
+            for (i in data.schedule) {
+                var e = data.schedule[i];
+                
+                $('#calendar').fullCalendar('renderEvent', {
+                        title: e.lecture,
+                        allDay: false,
+                        editable: false,
+                        start: calendar_time(e.start, e.day),//'Wed, 4 Mar 2013 13:00:00 EST'
+                        end: calendar_time(e.end, e.day)
+                    }, true);
+            }
+        });
     });
 
 </script>
-<style type='text/css'>
-
-	body {
-		margin-top: 40px;
-		text-align: center;
-		font-size: 14px;
-		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
-		}
-		
-	#wrap {
-		width: 1100px;
-		margin: 0 auto;
-		}
-		
-	#external-events {
-		float: left;
-		width: 150px;
-		padding: 0 10px;
-		border: 1px solid #ccc;
-		background: #eee;
-		text-align: left;
-		}
-		
-	#external-events h4 {
-		font-size: 16px;
-		margin-top: 0;
-		padding-top: 1em;
-		}
-		
-	.external-event { /* try to mimick the look of a real event */
-		margin: 10px 0;
-		padding: 2px 4px;
-		background: #3366CC;
-		color: #fff;
-		font-size: .85em;
-		cursor: pointer;
-		}
-		
-	#external-events p {
-		margin: 1.5em 0;
-		font-size: 11px;
-		color: #666;
-		}
-		
-	#external-events p input {
-		margin: 0;
-		vertical-align: middle;
-		}
-
-	#calendar {
-		float: right;
-		width: 900px;
-		}
-
-</style>
-<div id='wrap'>
-
-<div id='external-events'>
-<h4>Draggable Events</h4>
-<div class='external-event'>My Event 1</div>
-<div class='external-event'>My Event 2</div>
-<div class='external-event'>My Event 3</div>
-<div class='external-event'>My Event 4</div>
-<div class='external-event'>My Event 5</div>
-<p>
-<input type='checkbox' id='drop-remove' /> <label for='drop-remove'>remove after drop</label>
-</p>
-</div>
-
-
-<span class="fc-button fc-button-prev fc-state-default fc-corner-left"><span class="fc-button-inner">
-    <span class="fc-button-content">&nbsp;◄&nbsp;</span><span class="fc-button-effect"><span></span></span></span></span>
-    <span class="fc-button fc-button-next fc-state-default fc-corner-right"><span class="fc-button-inner">
-        <span class="fc-button-content">&nbsp;►&nbsp;</span><span class="fc-button-effect"><span></span></span></span></span>
-    <span class="fc-header-space"></span>
-<div id='calendar'></div>
-
-<div style='clear:both'></div>
-</div>
-
-<div class="container">
-<div class="row">
-        {% for v in izbirne_vaje %}
-    
-        <div class="span4">
-          <h4>{{izbirne_vaje[v].predmet}} <span style="font-size:12px;font-weight:normal;font-style:italic">
-            {#  ( <a href="http://chp.uni-mb.si/rezervacije/ro/" target="_blank">obišči</a> )</span>#}</h4>
-            <form method="post">
-                <input type="hidden" name="predmet" value="{{v}}" />
-          <ul style="list-style:none">
-              {% for termin in izbirne_vaje[v].termini %}
-                <li><input {% if termin.selected %}checked="checked" {%endif%} type="radio" name="vaje_termin" value="{{termin.id}}" /> 
-                    {{termin.dan|day}}, {{termin.termin}}</li>
-              {% endfor %}
-              <br />
-              <button class="btn btn-medium btn-primary" type="submit">Shrani</button>
-              <button class="btn btn-medium btn-secondary" name="vaje_clear" value="yes" type="submit">Zbriši</button>
-          </ul>
-                </form>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
 {% endblock %}

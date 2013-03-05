@@ -192,9 +192,6 @@ def json_urnik():
             return redirect(url_for('json_urnik'))
 
     monday = date-datetime.timedelta(days=date.weekday())
-    saturday = monday + datetime.timedelta(days=5)
-    prev_week = format_date(monday - datetime.timedelta(days=7), "dd-MM-y")
-    next_week = format_date(monday + datetime.timedelta(days=7), "dd-MM-y")
 
     timetable = get_schedule(date, get_project())
 
@@ -265,116 +262,24 @@ def urnik(day=None):
 
     if day:
         try:
-            date = datetime.datetime.strptime(day, '%d-%m-%Y')
+            date = datetime.datetime.strptime(day, '%d-%m-%Y').date()
         except:
             return redirect(url_for('urnik'))
 
-    
+    monday = date-datetime.timedelta(days=date.weekday())
+    saturday = monday + datetime.timedelta(days=5)
+    prev_week = format_date(monday - datetime.timedelta(days=7), "dd-MM-y")
+    next_week = format_date(monday + datetime.timedelta(days=7), "dd-MM-y")
 
-    """days_name = ['Pon','Tor','Sre',u'Čet', 'Pet', 'Sob']
-    days = []
-
-    for i in range(1,7):
-        days.append([days_name[i-1], monday+datetime.timedelta(days=i-1)])
-
-    timetable = get_schedule(date, get_project())
-    
-    start = 7*60
-    end = 20*60+30
-
-    hours = []
-
-    hour_data = {}
-    reservations = []
-
-    for event in timetable:
-        if 'start' in event:
-            hour_data[str(event['day'])+str(event['start'])] = event
-        else:
-            if ro_selected and event['lecture'].lower() == ro_selected.predmet.lower():
-                e=event
-                t = ro_selected.termin.split('-')
-                e['start'] = t[0]
-                e['end'] = t[1]
-                e['day'] = ro_selected.dan
-
-                hour_data[str(event['day'])+str(event['start'])] = e
-            elif rain_selected and event['lecture'].lower() == rain_selected.predmet.lower():
-                e=event
-                t = rain_selected.termin.split('-')
-                e['start'] = t[0]
-                e['end'] = t[1]
-                e['day'] = rain_selected.dan
-
-                hour_data[str(event['day'])+str(event['start'])] = e
-            else:
-                reservations.append(event)
-
-
-
-    print reservations
-
-    while start <= end:
-        time = start
-        hour = time/60
-        minutes = time-hour*60
-
-        t = ""
-        if len(str(hour)) == 1:
-            t+="0"
-
-        t+=str(hour) + ":"
-        
-        if len(str(minutes)) == 1:
-            t+="0"
-
-        t+=str(minutes)
-
-        h_days=[]
-        for day in range(1,7):
-            if str(day)+str(t) in hour_data:
-
-                if 'type' in hour_data[str(day)+str(t)]:
-                    
-
-                    i = time_to_i(hour_data[str(day)+str(t)]['start'])
-                    i2 = time_to_i(hour_data[str(day)+str(t)]['end'])
-
-                    diff=i2-i-1
-
-                    spacing = 0
-                    for x in range(i+1, i2):
-                         if not str(day)+i_to_time(x) in hour_data:
-                            hour_data[str(day)+i_to_time(x)] = {'empty':True}
-                            spacing=spacing+1
-
-                    hour_data[str(day)+str(t)]['spacing'] = spacing+1
-                    h_days.append(hour_data[str(day)+str(t)])
-
-
-                elif 'empty' in hour_data[str(day)+str(t)]:
-                    h_days.append({'empty':True})
-                else:
-                    h_days.append(None)
-                    
-            else:
-                h_days.append(None)
-
-        hours.append({ 'hour': t, 'cells':h_days })
-
-        start += 30
-        """
     return render_template('urnik.html',
         title = 'Urnik',
         date = date,
-        izbirne_vaje=izbirne_vaje)
-    """hours=hours,
-        hour_data=json.dumps(hour_data),
-        
+        izbirne_vaje=izbirne_vaje,
+
         monday=monday,
         saturday = saturday,
         prev_week = prev_week,
-        next_week = next_week)"""
+        next_week = next_week)
 
 class login_info:
     def __init__(self, nick, email):
