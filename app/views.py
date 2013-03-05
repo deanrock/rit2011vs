@@ -242,7 +242,9 @@ def urnik(day=None):
     #settings
     izbirne_vaje = {}
 
-    selected = g.user.vaje.all()
+    if g.user.is_authenticated():
+        selected = g.user.vaje.all()
+
     vaje = Vaje.query.all()
 
     for termin in vaje:
@@ -252,7 +254,7 @@ def urnik(day=None):
 
         t = termin
 
-        if t in selected:
+        if g.user.is_authenticated() and t in selected:
             t.selected = True
 
         izbirne_vaje[termin.predmet]['termini'].append(t)
