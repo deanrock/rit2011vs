@@ -127,7 +127,7 @@ def get_schedule(day, project):
                  'feri-navigator': 89 }
     date = '.'.join(map(str, map(int, day.strftime("%d-%m-%Y").split("-"))))
     
-    path = 'tmp/timetables/'+str(project)+'-'+date
+    path = app.root_path + '/tmp/timetables/'+str(project)+'-'+date
 
     data = {}
 
