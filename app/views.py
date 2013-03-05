@@ -72,9 +72,9 @@ def index():
 def load_user(id):
     return User.query.get(int(id))
 
-@app.route('/login_oid')
+@app.route('/login')
 @oid.loginhandler
-def login_oid():
+def login():
     if g.user is not None and g.user.is_authenticated():
         return redirect(url_for('index'))
 
@@ -282,31 +282,6 @@ def urnik(day=None):
         saturday = saturday,
         prev_week = prev_week,
         next_week = next_week)
-
-class login_info:
-    def __init__(self, nick, email):
-        self.nickname=nick
-        self.email=email
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if g.user is not None and g.user.is_authenticated():
-        return redirect(url_for('index'))
-
-    if 'username' in request.form and 'password' in request.form:
-        login = PHPBB_Login('http://rit2011vs.mojforum.si')
-
-        nick, email = login.check_login(request.form['username'], request.form['password'])
-
-        if nick == None:
-            flash(u'Napačno uporabniško ime in/ali geslo.', 'error')
-        else:
-            if 'remember-me' in request.form:
-                session['remember_me'] = True
-
-            after_login(login_info(nick, email))
-
-    return render_template('login.html')
 
 @app.route('/my-profile')
 @login_required

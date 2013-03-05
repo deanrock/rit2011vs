@@ -14,8 +14,8 @@ db = SQLAlchemy(app)
 babel = Babel(app)
 lm = LoginManager()
 lm.setup_app(app)
-lm.login_view = 'login_oid'
-oid = OpenID(app, os.path.join(basedir, 'tmp'))
+lm.login_view = 'login'
+oid = OpenID(app, os.path.join(app.root_path, 'tmp'))
 
 
 from app import views, models

@@ -101,4 +101,7 @@ insert_or_edit('Skupina 3', 'E-110', 'Sistemska administracija', '8:05-9:15', 1,
 insert_or_edit('Skupina FERI Navigator', 'F-103/F-104', 'Osnove računalniškega vida', '12:15-13:45', 5, '')
 insert_or_edit('Skupina Pametni Telefon', 'F-103/F-104', 'Osnove računalniškega vida', '13:45-15:15', 5, '')
 
+#update ARP
+insert_or_edit('Skupina 1', 'G-219', 'Algoritmi v računalniški praksi', '11:00-13:15', 3, '')
+
 print models.Vaje.query.all()
